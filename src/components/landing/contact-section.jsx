@@ -22,13 +22,13 @@ const ContactSection = memo(function ContactSection() {
   const slots = Array.from({ length: SLOTS }, (_, i) => contacts[i] || null);
 
   return (
-    <Box component="section" id="contact" sx={{ py: { xs: 8, md: 12 }, backgroundColor: '#fff' }}>
+    <Box component="section" id="shortcut" sx={{ py: { xs: 8, md: 12 }, backgroundColor: '#fff' }}>
       <Container maxWidth="lg">
         <Typography
           variant="overline"
           sx={{ color: 'primary.main', letterSpacing: '0.2em', display: 'block', textAlign: 'center', mb: 1 }}
         >
-          Contact
+          Short Cut
         </Typography>
         <Typography
           variant="h4"

@@ -51,7 +51,7 @@ function MemoPage() {
 
   return (
     <Box component="main" sx={{ minHeight: '100vh', py: { xs: 4, md: 6 } }}>
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <Typography
           variant="h3"
           sx={{ fontWeight: 700, mb: 1, color: '#1a1a1a', fontSize: { xs: '1.75rem', md: '2.5rem' } }}

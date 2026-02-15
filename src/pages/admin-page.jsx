@@ -100,7 +100,7 @@ function AdminPage() {
         >
           <Tab label="Arcaives" />
           <Tab label="Memo" />
-          <Tab label="Contact" />
+          <Tab label="Short Cut" />
         </Tabs>
 
         {activeTab === 0 && <ArcaivesManager />}

@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { label: 'Home', path: '/' },
   { label: 'Arcaives', path: '/arcaives' },
   { label: 'Memo', path: '/memo' },
-  { label: 'Contact', path: '/#contact' },
+  { label: 'Short Cut', path: '/#shortcut' },
 ];
 
 const Header = memo(function Header() {
