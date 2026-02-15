@@ -1,0 +1,25 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+:root {
+  --color-primary: #4285f4;
+  --color-glitch: #D5BEE1;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+}
+
+::selection {
+  background: rgba(66, 133, 244, 0.2);
+}
