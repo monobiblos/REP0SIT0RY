@@ -83,6 +83,32 @@ const HeroSection = memo(function HeroSection() {
     scene.add(sphere1);
     scene.add(sphere2);
 
+    // Dust particles orbiting around spheres
+    const DUST_COUNT = 80;
+    const dustPositions = new Float32Array(DUST_COUNT * 3);
+    const dustData = []; // store orbit params per particle
+    for (let i = 0; i < DUST_COUNT; i++) {
+      const orbitRadius = 1.2 + Math.random() * 2.0;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = (Math.random() - 0.5) * Math.PI * 0.8;
+      const speed = (0.08 + Math.random() * 0.12) * (Math.random() < 0.5 ? 1 : -1);
+      dustData.push({ orbitRadius, theta, phi, speed });
+      dustPositions[i * 3] = orbitRadius * Math.cos(theta) * Math.cos(phi);
+      dustPositions[i * 3 + 1] = orbitRadius * Math.sin(phi);
+      dustPositions[i * 3 + 2] = orbitRadius * Math.sin(theta) * Math.cos(phi);
+    }
+    const dustGeo = new THREE.BufferGeometry();
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
+    const dustMat = new THREE.PointsMaterial({
+      color: 0x000000,
+      size: 0.02,
+      transparent: true,
+      opacity: 0.4,
+      sizeAttenuation: true,
+    });
+    const dustPoints = new THREE.Points(dustGeo, dustMat);
+    scene.add(dustPoints);
+
     // Glitch canvas overlay
     const glitchCanvas = document.createElement('canvas');
     glitchCanvas.width = w;
@@ -100,6 +126,17 @@ const HeroSection = memo(function HeroSection() {
       sphere1.rotation.x = Math.sin(t * 0.08) * 0.1;
       sphere2.rotation.y = -t * 0.22;
       sphere2.rotation.z = t * 0.1;
+
+      // Update dust positions
+      const pos = dustGeo.attributes.position.array;
+      for (let i = 0; i < DUST_COUNT; i++) {
+        const d = dustData[i];
+        const angle = d.theta + t * d.speed;
+        pos[i * 3] = d.orbitRadius * Math.cos(angle) * Math.cos(d.phi);
+        pos[i * 3 + 1] = d.orbitRadius * Math.sin(d.phi);
+        pos[i * 3 + 2] = d.orbitRadius * Math.sin(angle) * Math.cos(d.phi);
+      }
+      dustGeo.attributes.position.needsUpdate = true;
 
       renderer.render(scene, camera);
 
