@@ -21,7 +21,7 @@ import AddIcon from '@mui/icons-material/Add';
 import LockIcon from '@mui/icons-material/Lock';
 import { supabase } from '../../utils/supabase';
 
-const emptyEntry = { title: '', content: '', is_secret: false, sort_order: 0 };
+const emptyEntry = { title: '', content: '', is_secret: false, sort_order: 0, secret_password: '' };
 
 function ArcaivesManager() {
   const [entries, setEntries] = useState([]);
@@ -48,7 +48,7 @@ function ArcaivesManager() {
   const handleOpen = (entry = null) => {
     if (entry) {
       setEditingEntry(entry);
-      setFormData({ title: entry.title, content: entry.content || '', is_secret: entry.is_secret, sort_order: entry.sort_order });
+      setFormData({ title: entry.title, content: entry.content || '', is_secret: entry.is_secret, sort_order: entry.sort_order, secret_password: entry.secret_password || '' });
     } else {
       setEditingEntry(null);
       setFormData(emptyEntry);
@@ -62,12 +62,14 @@ function ArcaivesManager() {
       return;
     }
     setSubmitting(true);
+    const payload = { ...formData };
+    if (!payload.is_secret) payload.secret_password = '';
     try {
       if (editingEntry) {
-        await supabase.from('repository_arcaives').update(formData).eq('id', editingEntry.id);
+        await supabase.from('repository_arcaives').update(payload).eq('id', editingEntry.id);
         setSnackbar({ open: true, message: 'Updated.', severity: 'success' });
       } else {
-        await supabase.from('repository_arcaives').insert([formData]);
+        await supabase.from('repository_arcaives').insert([payload]);
         setSnackbar({ open: true, message: 'Created.', severity: 'success' });
       }
       setDialogOpen(false);
@@ -133,6 +135,9 @@ function ArcaivesManager() {
           <TextField fullWidth label="Content" value={formData.content} onChange={(e) => setFormData({ ...formData, content: e.target.value })} multiline minRows={8} />
           <TextField fullWidth label="Sort Order" type="number" value={formData.sort_order} onChange={(e) => setFormData({ ...formData, sort_order: Number(e.target.value) })} />
           <FormControlLabel control={<Switch checked={formData.is_secret} onChange={(e) => setFormData({ ...formData, is_secret: e.target.checked })} />} label="Secret" />
+          {formData.is_secret && (
+            <TextField fullWidth label="Secret Password (optional)" value={formData.secret_password} onChange={(e) => setFormData({ ...formData, secret_password: e.target.value })} helperText="Set a password to allow visitors to unlock this entry" />
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
