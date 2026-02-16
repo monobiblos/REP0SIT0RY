@@ -75,6 +75,39 @@ const HeroSection = memo(function HeroSection() {
       return group;
     };
 
+    // DNA double helix background
+    const dnaGroup = new THREE.Group();
+    const dnaMat = new THREE.LineBasicMaterial({ color: 0x000000, opacity: 0.08, transparent: true });
+    const dnaRungMat = new THREE.LineBasicMaterial({ color: 0x000000, opacity: 0.05, transparent: true });
+    const DNA_RADIUS = 1.2;
+    const DNA_HEIGHT = 18;
+    const DNA_STEPS = 200;
+    const DNA_TURNS = 4;
+    const RUNG_INTERVAL = 8;
+
+    const strand1Pts = [];
+    const strand2Pts = [];
+    for (let i = 0; i <= DNA_STEPS; i++) {
+      const frac = i / DNA_STEPS;
+      const y = (frac - 0.5) * DNA_HEIGHT;
+      const angle = frac * Math.PI * 2 * DNA_TURNS;
+      strand1Pts.push(new THREE.Vector3(DNA_RADIUS * Math.cos(angle), y, DNA_RADIUS * Math.sin(angle)));
+      strand2Pts.push(new THREE.Vector3(DNA_RADIUS * Math.cos(angle + Math.PI), y, DNA_RADIUS * Math.sin(angle + Math.PI)));
+    }
+    const strand1Geo = new THREE.BufferGeometry().setFromPoints(strand1Pts);
+    const strand2Geo = new THREE.BufferGeometry().setFromPoints(strand2Pts);
+    dnaGroup.add(new THREE.Line(strand1Geo, dnaMat));
+    dnaGroup.add(new THREE.Line(strand2Geo, dnaMat));
+
+    // Rungs connecting the two strands
+    for (let i = 0; i <= DNA_STEPS; i += RUNG_INTERVAL) {
+      const rungGeo = new THREE.BufferGeometry().setFromPoints([strand1Pts[i], strand2Pts[i]]);
+      dnaGroup.add(new THREE.Line(rungGeo, dnaRungMat));
+    }
+
+    dnaGroup.position.z = -3; // behind the spheres
+    scene.add(dnaGroup);
+
     const sphere1 = createCelestialSphere(2.2, 16);
     const sphere2 = createCelestialSphere(1.4, 12);
     sphere2.position.x = 0.3;
@@ -121,6 +154,8 @@ const HeroSection = memo(function HeroSection() {
     const animate = (time) => {
       frameId = requestAnimationFrame(animate);
       const t = time * 0.001;
+
+      dnaGroup.rotation.y = t * 0.06;
 
       sphere1.rotation.y = t * 0.15;
       sphere1.rotation.x = Math.sin(t * 0.08) * 0.1;
