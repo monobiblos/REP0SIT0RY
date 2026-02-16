@@ -100,7 +100,7 @@ const ArcaivesSection = memo(function ArcaivesSection() {
           variant="h4"
           sx={{ fontWeight: 700, textAlign: 'center', mb: 6, color: '#1a1a1a' }}
         >
-          Bookshelf
+          책장
         </Typography>
 
         <Box sx={{ maxWidth: 500, mx: 'auto', mb: 4 }}>
@@ -111,7 +111,7 @@ const ArcaivesSection = memo(function ArcaivesSection() {
             ))}
             {topShelf.length === 0 && (
               <Typography sx={{ color: 'text.secondary', fontSize: '0.8rem', m: 'auto' }}>
-                empty shelf...
+                빈 선반...
               </Typography>
             )}
           </Box>
@@ -122,7 +122,7 @@ const ArcaivesSection = memo(function ArcaivesSection() {
             ))}
             {books.length > 0 && bottomShelf.length === 0 && (
               <Typography sx={{ color: 'text.secondary', fontSize: '0.8rem', m: 'auto' }}>
-                empty shelf...
+                빈 선반...
               </Typography>
             )}
           </Box>
@@ -130,7 +130,7 @@ const ArcaivesSection = memo(function ArcaivesSection() {
 
         <Box sx={{ textAlign: 'center' }}>
           <Button component={Link} to="/arcaives" variant="outlined" size="small">
-            View All Arcaives
+            전체 보기
           </Button>
         </Box>
       </Container>

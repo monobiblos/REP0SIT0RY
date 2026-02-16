@@ -180,7 +180,7 @@ const HeroSection = memo(function HeroSection() {
           variant="body1"
           sx={{ color: 'text.secondary', letterSpacing: '0.1em', fontSize: '0.9rem' }}
         >
-          archive &middot; memo &middot; record
+          기록 &middot; 메모 &middot; 보관
         </Typography>
       </Box>
     </Box>

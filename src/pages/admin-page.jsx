@@ -39,10 +39,10 @@ function AdminPage() {
         sessionStorage.setItem('repo_admin_auth', 'true');
         setIsAuthenticated(true);
       } else {
-        setError('Wrong password.');
+        setError('비밀번호가 틀렸습니다.');
       }
     } catch {
-      setError('HTTPS connection required.');
+      setError('HTTPS 연결이 필요합니다.');
     }
   }, [password]);
 
@@ -64,7 +64,7 @@ function AdminPage() {
               <TextField
                 fullWidth
                 type="password"
-                label="Password"
+                label="비밀번호"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 error={!!error}
@@ -72,7 +72,7 @@ function AdminPage() {
                 sx={{ mb: 2 }}
               />
               <Button fullWidth variant="contained" type="submit">
-                Login
+                로그인
               </Button>
             </form>
           </CardContent>
@@ -89,7 +89,7 @@ function AdminPage() {
             Admin
           </Typography>
           <Button variant="outlined" size="small" onClick={handleLogout}>
-            Logout
+            로그아웃
           </Button>
         </Box>
 

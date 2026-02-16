@@ -59,22 +59,22 @@ function MemoManager() {
 
   const handleSubmit = async () => {
     if (!formData.title.trim()) {
-      setSnackbar({ open: true, message: 'Title is required.', severity: 'warning' });
+      setSnackbar({ open: true, message: '제목을 입력해주세요.', severity: 'warning' });
       return;
     }
     setSubmitting(true);
     try {
       if (editingMemo) {
         await supabase.from('repository_memos').update(formData).eq('id', editingMemo.id);
-        setSnackbar({ open: true, message: 'Updated.', severity: 'success' });
+        setSnackbar({ open: true, message: '수정되었습니다.', severity: 'success' });
       } else {
         await supabase.from('repository_memos').insert([formData]);
-        setSnackbar({ open: true, message: 'Created.', severity: 'success' });
+        setSnackbar({ open: true, message: '생성되었습니다.', severity: 'success' });
       }
       setDialogOpen(false);
       fetchMemos();
     } catch {
-      setSnackbar({ open: true, message: 'Failed.', severity: 'error' });
+      setSnackbar({ open: true, message: '저장에 실패했습니다.', severity: 'error' });
     }
     setSubmitting(false);
   };
@@ -83,7 +83,7 @@ function MemoManager() {
     if (!deleteTarget) return;
     setSubmitting(true);
     await supabase.from('repository_memos').delete().eq('id', deleteTarget.id);
-    setSnackbar({ open: true, message: 'Deleted.', severity: 'success' });
+    setSnackbar({ open: true, message: '삭제되었습니다.', severity: 'success' });
     setDeleteTarget(null);
     fetchMemos();
     setSubmitting(false);
@@ -96,7 +96,7 @@ function MemoManager() {
           Memos ({memos.length})
         </Typography>
         <Button startIcon={<AddIcon />} variant="contained" size="small" onClick={() => handleOpen()}>
-          Add
+          추가
         </Button>
       </Box>
 
@@ -130,26 +130,26 @@ function MemoManager() {
       </Grid>
 
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>{editingMemo ? 'Edit Memo' : 'New Memo'}</DialogTitle>
+        <DialogTitle>{editingMemo ? '메모 수정' : '새 메모 작성'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
-          <TextField fullWidth label="Title" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
-          <TextField fullWidth label="Link" placeholder="https://..." value={formData.link} onChange={(e) => setFormData({ ...formData, link: e.target.value })} />
-          <TextField fullWidth label="Memo" value={formData.memo} onChange={(e) => setFormData({ ...formData, memo: e.target.value })} multiline minRows={4} />
-          <TextField fullWidth label="Tags" placeholder="tag1, tag2, tag3" value={formData.tags} onChange={(e) => setFormData({ ...formData, tags: e.target.value })} helperText="Comma-separated. First tag is used as category." />
-          <FormControlLabel control={<Switch checked={formData.is_secret} onChange={(e) => setFormData({ ...formData, is_secret: e.target.checked })} />} label="Secret" />
+          <TextField fullWidth label="제목" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
+          <TextField fullWidth label="링크" placeholder="https://..." value={formData.link} onChange={(e) => setFormData({ ...formData, link: e.target.value })} />
+          <TextField fullWidth label="메모" value={formData.memo} onChange={(e) => setFormData({ ...formData, memo: e.target.value })} multiline minRows={4} />
+          <TextField fullWidth label="태그" placeholder="태그1, 태그2, 태그3" value={formData.tags} onChange={(e) => setFormData({ ...formData, tags: e.target.value })} helperText="쉼표로 구분. 첫 번째 태그가 카테고리로 사용됩니다." />
+          <FormControlLabel control={<Switch checked={formData.is_secret} onChange={(e) => setFormData({ ...formData, is_secret: e.target.checked })} />} label="비공개" />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleSubmit} disabled={submitting}>{submitting ? 'Saving...' : 'Save'}</Button>
+          <Button onClick={() => setDialogOpen(false)}>취소</Button>
+          <Button variant="contained" onClick={handleSubmit} disabled={submitting}>{submitting ? '저장 중...' : '저장'}</Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)}>
-        <DialogTitle>Delete Memo</DialogTitle>
-        <DialogContent><Typography>Delete "{deleteTarget?.title}"?</Typography></DialogContent>
+        <DialogTitle>메모 삭제</DialogTitle>
+        <DialogContent><Typography>"{deleteTarget?.title}"을(를) 삭제하시겠습니까?</Typography></DialogContent>
         <DialogActions>
-          <Button onClick={() => setDeleteTarget(null)}>Cancel</Button>
-          <Button color="error" variant="contained" onClick={handleDelete} disabled={submitting}>Delete</Button>
+          <Button onClick={() => setDeleteTarget(null)}>취소</Button>
+          <Button color="error" variant="contained" onClick={handleDelete} disabled={submitting}>삭제</Button>
         </DialogActions>
       </Dialog>
 

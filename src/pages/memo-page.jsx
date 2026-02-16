@@ -59,7 +59,7 @@ function MemoPage() {
           Memo
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary', mb: 4 }}>
-          {filtered.length} notes{secretCount > 0 ? ` (+${secretCount} private)` : ''}
+          {filtered.length}개의 메모{secretCount > 0 ? ` (+${secretCount}개 비공개)` : ''}
         </Typography>
 
         {/* Tag filter */}
@@ -140,7 +140,7 @@ function MemoPage() {
           {!loading && filtered.length === 0 && (
             <Grid size={12}>
               <Typography sx={{ textAlign: 'center', color: 'text.secondary', py: 8 }}>
-                No memos found.
+                메모가 없습니다.
               </Typography>
             </Grid>
           )}

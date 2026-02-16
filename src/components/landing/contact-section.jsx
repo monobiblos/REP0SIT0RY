@@ -34,7 +34,7 @@ const ContactSection = memo(function ContactSection() {
           variant="h4"
           sx={{ fontWeight: 700, textAlign: 'center', mb: 6, color: '#1a1a1a' }}
         >
-          Links
+          바로가기
         </Typography>
 
         <Box
@@ -81,7 +81,7 @@ const ContactSection = memo(function ContactSection() {
                   sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               ) : (
-                <Typography sx={{ color: '#bbb', fontSize: '0.75rem' }}>empty</Typography>
+                <Typography sx={{ color: '#bbb', fontSize: '0.75rem' }}>비어 있음</Typography>
               )}
             </Box>
           ))}

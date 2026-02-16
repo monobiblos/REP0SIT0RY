@@ -149,7 +149,7 @@ function ArcaivesPage() {
                   '& p': { mb: 2 },
                 }}
               >
-                {showContent ? detail.content : '[This entry is private.]'}
+                {showContent ? detail.content : '[이 글은 비공개입니다.]'}
               </Box>
             </>
           )}
@@ -157,26 +157,26 @@ function ArcaivesPage() {
 
         {/* Password Dialog */}
         <Dialog open={pwDialogOpen} onClose={handlePwCancel} maxWidth="xs" fullWidth>
-          <DialogTitle>Password Required</DialogTitle>
+          <DialogTitle>비밀번호 입력</DialogTitle>
           <DialogContent>
             <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-              This entry is protected. Enter the password to view.
+              이 글은 비밀번호로 보호되어 있습니다. 비밀번호를 입력해주세요.
             </Typography>
             <TextField
               fullWidth
               type="password"
-              label="Password"
+              label="비밀번호"
               value={pwInput}
               onChange={(e) => { setPwInput(e.target.value); setPwError(false); }}
               onKeyDown={(e) => e.key === 'Enter' && handlePwSubmit()}
               error={pwError}
-              helperText={pwError ? 'Incorrect password.' : ''}
+              helperText={pwError ? '비밀번호가 틀렸습니다.' : ''}
               autoFocus
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handlePwCancel}>Cancel</Button>
-            <Button variant="contained" onClick={handlePwSubmit}>Unlock</Button>
+            <Button onClick={handlePwCancel}>취소</Button>
+            <Button variant="contained" onClick={handlePwSubmit}>열기</Button>
           </DialogActions>
         </Dialog>
       </Box>
@@ -194,7 +194,7 @@ function ArcaivesPage() {
           Arcaives
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary', mb: 6 }}>
-          Click a book to read.
+          책을 클릭하면 내용을 볼 수 있습니다.
         </Typography>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
@@ -270,7 +270,7 @@ function ArcaivesPage() {
           })}
           {!loading && entries.length === 0 && (
             <Typography sx={{ textAlign: 'center', color: 'text.secondary', py: 8 }}>
-              No entries yet.
+              아직 작성된 글이 없습니다.
             </Typography>
           )}
         </Box>

@@ -58,7 +58,7 @@ function ArcaivesManager() {
 
   const handleSubmit = async () => {
     if (!formData.title.trim()) {
-      setSnackbar({ open: true, message: 'Title is required.', severity: 'warning' });
+      setSnackbar({ open: true, message: '제목을 입력해주세요.', severity: 'warning' });
       return;
     }
     setSubmitting(true);
@@ -67,15 +67,15 @@ function ArcaivesManager() {
     try {
       if (editingEntry) {
         await supabase.from('repository_arcaives').update(payload).eq('id', editingEntry.id);
-        setSnackbar({ open: true, message: 'Updated.', severity: 'success' });
+        setSnackbar({ open: true, message: '수정되었습니다.', severity: 'success' });
       } else {
         await supabase.from('repository_arcaives').insert([payload]);
-        setSnackbar({ open: true, message: 'Created.', severity: 'success' });
+        setSnackbar({ open: true, message: '생성되었습니다.', severity: 'success' });
       }
       setDialogOpen(false);
       fetchEntries();
     } catch {
-      setSnackbar({ open: true, message: 'Failed.', severity: 'error' });
+      setSnackbar({ open: true, message: '저장에 실패했습니다.', severity: 'error' });
     }
     setSubmitting(false);
   };
@@ -84,7 +84,7 @@ function ArcaivesManager() {
     if (!deleteTarget) return;
     setSubmitting(true);
     await supabase.from('repository_arcaives').delete().eq('id', deleteTarget.id);
-    setSnackbar({ open: true, message: 'Deleted.', severity: 'success' });
+    setSnackbar({ open: true, message: '삭제되었습니다.', severity: 'success' });
     setDeleteTarget(null);
     fetchEntries();
     setSubmitting(false);
@@ -97,7 +97,7 @@ function ArcaivesManager() {
           Arcaives ({entries.length})
         </Typography>
         <Button startIcon={<AddIcon />} variant="contained" size="small" onClick={() => handleOpen()}>
-          Add
+          추가
         </Button>
       </Box>
 
@@ -129,33 +129,33 @@ function ArcaivesManager() {
 
       {/* Edit/Create Dialog */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="md">
-        <DialogTitle>{editingEntry ? 'Edit Entry' : 'New Entry'}</DialogTitle>
+        <DialogTitle>{editingEntry ? '글 수정' : '새 글 작성'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
-          <TextField fullWidth label="Title" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
-          <TextField fullWidth label="Content" value={formData.content} onChange={(e) => setFormData({ ...formData, content: e.target.value })} multiline minRows={8} />
-          <TextField fullWidth label="Sort Order" type="number" value={formData.sort_order} onChange={(e) => setFormData({ ...formData, sort_order: Number(e.target.value) })} />
-          <FormControlLabel control={<Switch checked={formData.is_secret} onChange={(e) => setFormData({ ...formData, is_secret: e.target.checked })} />} label="Secret" />
+          <TextField fullWidth label="제목" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
+          <TextField fullWidth label="내용" value={formData.content} onChange={(e) => setFormData({ ...formData, content: e.target.value })} multiline minRows={8} />
+          <TextField fullWidth label="정렬 순서" type="number" value={formData.sort_order} onChange={(e) => setFormData({ ...formData, sort_order: Number(e.target.value) })} />
+          <FormControlLabel control={<Switch checked={formData.is_secret} onChange={(e) => setFormData({ ...formData, is_secret: e.target.checked })} />} label="비공개" />
           {formData.is_secret && (
-            <TextField fullWidth label="Secret Password (optional)" value={formData.secret_password} onChange={(e) => setFormData({ ...formData, secret_password: e.target.value })} helperText="Set a password to allow visitors to unlock this entry" />
+            <TextField fullWidth label="열람 비밀번호 (선택)" value={formData.secret_password} onChange={(e) => setFormData({ ...formData, secret_password: e.target.value })} helperText="비밀번호를 설정하면 방문자가 비밀번호를 입력하여 열람할 수 있습니다" />
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button onClick={() => setDialogOpen(false)}>취소</Button>
           <Button variant="contained" onClick={handleSubmit} disabled={submitting}>
-            {submitting ? 'Saving...' : 'Save'}
+            {submitting ? '저장 중...' : '저장'}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Delete Dialog */}
       <Dialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)}>
-        <DialogTitle>Delete Entry</DialogTitle>
+        <DialogTitle>글 삭제</DialogTitle>
         <DialogContent>
-          <Typography>Delete "{deleteTarget?.title}"?</Typography>
+          <Typography>"{deleteTarget?.title}"을(를) 삭제하시겠습니까?</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDeleteTarget(null)}>Cancel</Button>
-          <Button color="error" variant="contained" onClick={handleDelete} disabled={submitting}>Delete</Button>
+          <Button onClick={() => setDeleteTarget(null)}>취소</Button>
+          <Button color="error" variant="contained" onClick={handleDelete} disabled={submitting}>삭제</Button>
         </DialogActions>
       </Dialog>
 

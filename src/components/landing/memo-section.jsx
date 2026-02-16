@@ -36,7 +36,7 @@ const MemoSection = memo(function MemoSection() {
           variant="h4"
           sx={{ fontWeight: 700, textAlign: 'center', mb: 6, color: '#1a1a1a' }}
         >
-          Recent Notes
+          최근 메모
         </Typography>
 
         <Grid container spacing={2}>
@@ -87,7 +87,7 @@ const MemoSection = memo(function MemoSection() {
           {memos.length === 0 && (
             <Grid size={12}>
               <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
-                No memos yet.
+                아직 메모가 없습니다.
               </Typography>
             </Grid>
           )}
@@ -95,7 +95,7 @@ const MemoSection = memo(function MemoSection() {
 
         <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Button component={Link} to="/memo" variant="outlined" size="small">
-            View All Memos
+            전체 보기
           </Button>
         </Box>
       </Container>
