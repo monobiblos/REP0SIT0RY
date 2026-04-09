@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import MDEditor from '@uiw/react-md-editor';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -20,7 +21,23 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import LockIcon from '@mui/icons-material/Lock';
 import { supabase } from '../../utils/supabase';
+//
 
+function WritePost() {
+  const [content, setContent] = useState('');
+
+  const submit = async () => {
+    await supabase.from('posts').insert({ title, content });
+  };
+
+  return (
+    <div>
+      <MDEditor value={content} onChange={setContent} height={400} />
+      <button onClick={submit}>저장</button>
+    </div>
+  );
+}
+//
 const emptyEntry = { title: '', content: '', is_secret: false, sort_order: 0, secret_password: '' };
 
 function ArcaivesManager() {
@@ -132,7 +149,11 @@ function ArcaivesManager() {
         <DialogTitle>{editingEntry ? '글 수정' : '새 글 작성'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
           <TextField fullWidth label="제목" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
-          <TextField fullWidth label="내용" value={formData.content} onChange={(e) => setFormData({ ...formData, content: e.target.value })} multiline minRows={8} />
+          <div data-color-mode="light">
+          <MDEditor value={formData.content}
+          onChange={(val) => setFormData({ ...formData, content: val || '' })}
+          height={300}
+          preview="live"/></div>
           <TextField fullWidth label="정렬 순서" type="number" value={formData.sort_order} onChange={(e) => setFormData({ ...formData, sort_order: Number(e.target.value) })} />
           <FormControlLabel control={<Switch checked={formData.is_secret} onChange={(e) => setFormData({ ...formData, is_secret: e.target.checked })} />} label="비공개" />
           {formData.is_secret && (
