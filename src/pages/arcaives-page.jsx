@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import MDEditor from '@uiw/react-md-editor';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -140,17 +141,18 @@ function ArcaivesPage() {
               >
                 {new Date(detail.created_at).toLocaleDateString('ko-KR')}
               </Typography>
-              <Box
-                sx={{
-                  color: '#1a1a1a',
-                  lineHeight: 1.8,
-                  fontSize: '1rem',
-                  whiteSpace: 'pre-wrap',
-                  '& p': { mb: 2 },
-                }}
-              >
-                {showContent ? detail.content : '[이 글은 비공개입니다.]'}
-              </Box>
+              <Box>
+              {showContent ? (
+              <div data-color-mode="light">
+                <MDEditor.Markdown
+                source={detail.content}
+                style={{ fontSize: '1rem', lineHeight: 1.8, background: 'transparent' }}
+                />
+              </div>
+              ) : (
+    <Typography sx={{ color: 'text.secondary' }}>[이 글은 비공개입니다.]</Typography>
+  )}
+</Box>
             </>
           )}
         </Container>
