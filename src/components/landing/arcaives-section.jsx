@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, memo } from 'react';
+import MDEditor from '@uiw/react-md-editor';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -16,7 +17,7 @@ const BOOK_COLORS = ['#4285f4', '#5c9aff', '#3367d6', '#7baaf7', '#2a56c6', '#8a
 
 const Book = memo(function Book({ index, title, isSecret, onClick }) {
   const color = BOOK_COLORS[index % BOOK_COLORS.length];
-  const width = 24 + Math.random() * 16;
+  const width = 24 + (index * 7 + 11) % 16;
   return (
     <Box
       onClick={onClick}
