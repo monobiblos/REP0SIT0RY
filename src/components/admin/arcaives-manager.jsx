@@ -150,10 +150,13 @@ function ArcaivesManager() {
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
           <TextField fullWidth label="제목" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
           <div data-color-mode="light">
-          <MDEditor value={formData.content}
-          onChange={(val) => setFormData({ ...formData, content: val || '' })}
-          height={300}
-          preview="live"/></div>
+            <MDEditor
+              value={formData.content}
+              onChange={(val) => setFormData({ ...formData, content: val || '' })}
+              height={300}
+              preview="live"
+            />
+          </div>
           <TextField fullWidth label="정렬 순서" type="number" value={formData.sort_order} onChange={(e) => setFormData({ ...formData, sort_order: Number(e.target.value) })} />
           <FormControlLabel control={<Switch checked={formData.is_secret} onChange={(e) => setFormData({ ...formData, is_secret: e.target.checked })} />} label="비공개" />
           {formData.is_secret && (
