@@ -5,8 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import App from './App.jsx';
 import theme from './theme.js';
 import './index.css';
-import '@uiw/react-md-editor/markdown-editor.css';
-import '@uiw/react-md-editor/markdown.css';
+import '@uiw/react-md-editor/dist/mdeditor.min.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
