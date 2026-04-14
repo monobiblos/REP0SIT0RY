@@ -66,7 +66,7 @@ const GuestbookSection = memo(function GuestbookSection() {
         {/* 폼 */}
         <Box sx={{
           bgcolor: '#fff',
-          border: '1px solid #8ab4f8',
+          border: '1px solid #2a56c6',
           borderRadius: 3,
           p: 2.5,
           mb: 3,
