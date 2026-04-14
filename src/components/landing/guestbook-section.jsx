@@ -130,7 +130,7 @@ const GuestbookSection = memo(function GuestbookSection() {
             {entries.map((entry) => (
               <Box key={entry.id} sx={{
                 bgcolor: '#fff',
-                border: '1px solid #8ab4f8',
+                border: '1px solid #2a56c6',
                 borderRadius: 3,
                 p: '14px 18px',
                 display: 'flex',
@@ -145,7 +145,7 @@ const GuestbookSection = memo(function GuestbookSection() {
                   border: `1px solid ${ACCENT_BORDER}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: '0.75rem', fontWeight: 700,
-                  color: '#2a56c6',
+                  color: '#8ab4f8',
                   flexShrink: 0,
                 }}>
                   {getInitial(entry.name)}
