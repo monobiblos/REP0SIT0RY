@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import GuestbookManager from '../components/admin/guestbook-manager';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -101,11 +102,13 @@ function AdminPage() {
           <Tab label="Arcaives" />
           <Tab label="Memo" />
           <Tab label="Short Cut" />
+          <Tab label="Guestbook" /> 
         </Tabs>
 
         {activeTab === 0 && <ArcaivesManager />}
         {activeTab === 1 && <MemoManager />}
         {activeTab === 2 && <ContactManager />}
+        {activeTab === 3 && <GuestbookManager />}
       </Container>
     </Box>
   );
