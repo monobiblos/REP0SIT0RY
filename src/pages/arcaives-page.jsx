@@ -17,6 +17,10 @@ import LockIcon from '@mui/icons-material/Lock';
 import { supabase } from '../utils/supabase';
 
 const SPINE_COLORS = ['#4285f4', '#5c9aff', '#3367d6', '#7baaf7', '#2a56c6', '#8ab4f8', '#1a73e8', '#669df6'];
+const isNew = (dateStr) => {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  return diff < 7 * 24 * 60 * 60 * 1000;
+};
 
 function ArcaivesPage() {
   const { id } = useParams();
@@ -263,10 +267,26 @@ function ArcaivesPage() {
                   >
                     {entry.title}
                   </Typography>
+                  {isNew(entry.created_at) && (
+                    <Box sx={{
+                      backgroundColor: '#ffdc73',
+                      color: '#111',
+                      fontSize: '0.6rem',
+                      fontWeight: 700,
+                      px: '5px',
+                      py: '2px',
+                      borderRadius: '3px',
+                      flexShrink: 0,
+                      letterSpacing: '0.05em',
+                    }}>
+                      NEW
+                    </Box>
+                  )}
                   {entry.is_secret && <LockIcon sx={{ fontSize: 16, color: 'text.secondary' }} />}
                   <Typography variant="caption" sx={{ color: 'text.secondary', flexShrink: 0 }}>
                     {new Date(entry.created_at).toLocaleDateString('ko-KR')}
                   </Typography>
+                  
                 </Box>
               </Box>
             );

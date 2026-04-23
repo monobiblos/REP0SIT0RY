@@ -15,7 +15,7 @@ import { supabase } from '../../utils/supabase';
 
 const BOOK_COLORS = ['#4285f4', '#5c9aff', '#3367d6', '#7baaf7', '#2a56c6', '#8ab4f8', '#1a73e8', '#669df6'];
 
-const Book = memo(function Book({ index, title, isSecret, onClick }) {
+const Book = memo(function Book({ index, title, isSecret, isNew, onClick }) {
   const color = BOOK_COLORS[index % BOOK_COLORS.length];
   const width = 24 + (index * 7 + 11) % 16;
   return (
@@ -38,6 +38,24 @@ const Book = memo(function Book({ index, title, isSecret, onClick }) {
       }}
       title={title}
     >
+      {isNew && (
+        <Box sx={{
+          position: 'absolute',
+          top: -6,
+          right: -4,
+          backgroundColor: '#ffdc73',
+          color: '#111',
+          fontSize: '0.4rem',
+          fontWeight: 700,
+          px: '3px',
+          py: '1px',
+          borderRadius: '2px',
+          lineHeight: 1.4,
+          letterSpacing: '0.03em',
+        }}>
+          NEW
+        </Box>
+      )}
       {isSecret && (
         <LockIcon sx={{ position: 'absolute', top: 4, fontSize: 10, color: 'rgba(255,255,255,0.7)' }} />
       )}
@@ -74,13 +92,17 @@ const ArcaivesSection = memo(function ArcaivesSection() {
     // Fetch public entries + secret entries with password
     supabase
       .from('repository_arcaives')
-      .select('id, title, is_secret, secret_password')
+      .select('id, title, is_secret, secret_password', 'created_at')
       .order('sort_order', { ascending: true })
       .then(({ data }) => {
         // Show: non-secret OR (secret with password)
         const visible = (data || []).filter(
           (b) => !b.is_secret || (b.is_secret && b.secret_password)
         );
+        const isNew = (dateStr) => {
+        const diff = Date.now() - new Date(dateStr).getTime();
+        return diff < 7 * 24 * 60 * 60 * 1000;
+        };
         setBooks(visible);
       });
   }, []);
@@ -163,7 +185,7 @@ const ArcaivesSection = memo(function ArcaivesSection() {
           {/* Top shelf */}
           <Box sx={{ ...shelfStyle, height: 130 }}>
             {topShelf.map((book, i) => (
-              <Book key={book.id} index={i} title={book.title} isSecret={book.is_secret} onClick={() => handleBookClick(book)} />
+              <Book key={book.id} index={i} title={book.title} isSecret={book.is_secret} isNew={isNew(book.created_at)} onClick={() => handleBookClick(book)} />
             ))}
             {topShelf.length === 0 && (
               <Typography sx={{ color: 'text.secondary', fontSize: '0.8rem', m: 'auto' }}>
@@ -174,7 +196,7 @@ const ArcaivesSection = memo(function ArcaivesSection() {
           {/* Bottom shelf */}
           <Box sx={{ ...shelfStyle, height: 130, mt: 3 }}>
             {bottomShelf.map((book, i) => (
-              <Book key={book.id} index={i + half} title={book.title} isSecret={book.is_secret} onClick={() => handleBookClick(book)} />
+              <Book key={book.id} index={i + half} title={book.title} isSecret={book.is_secret} isNew={isNew(book.created_at)} onClick={() => handleBookClick(book)} />
             ))}
             {books.length > 0 && bottomShelf.length === 0 && (
               <Typography sx={{ color: 'text.secondary', fontSize: '0.8rem', m: 'auto' }}>
