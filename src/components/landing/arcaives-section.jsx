@@ -14,7 +14,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../utils/supabase';
 
 const BOOK_COLORS = ['#4285f4', '#5c9aff', '#3367d6', '#7baaf7', '#2a56c6', '#8ab4f8', '#1a73e8', '#669df6'];
-
+const isNew = (dateStr) => {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  return diff < 7 * 24 * 60 * 60 * 1000;
+};
 const Book = memo(function Book({ index, title, isSecret, isNew, onClick }) {
   const color = BOOK_COLORS[index % BOOK_COLORS.length];
   const width = 24 + (index * 7 + 11) % 16;
@@ -99,10 +102,6 @@ const ArcaivesSection = memo(function ArcaivesSection() {
         const visible = (data || []).filter(
           (b) => !b.is_secret || (b.is_secret && b.secret_password)
         );
-        const isNew = (dateStr) => {
-        const diff = Date.now() - new Date(dateStr).getTime();
-        return diff < 7 * 24 * 60 * 60 * 1000;
-        };
         setBooks(visible);
       });
   }, []);
