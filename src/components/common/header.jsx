@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { label: 'Home', path: '/' },
   { label: 'Arcaives', path: '/arcaives' },
   { label: 'Memo', path: '/memo' },
-  { label: 'Short Cut', path: '/#shortcut' },
+  { label: 'Short Cut', path: '/shortcuts' },
 ];
 
 const Header = memo(function Header() {
@@ -28,27 +28,14 @@ const Header = memo(function Header() {
   const currentTab = NAV_ITEMS.findIndex((item) =>
     item.path === '/'
       ? location.pathname === '/'
-      : location.pathname.startsWith(item.path.replace('/#', ''))
+      : location.pathname.startsWith(item.path)
   );
 
   const handleChange = useCallback((_, newValue) => {
     const item = NAV_ITEMS[newValue];
-    if (item.path.startsWith('/#')) {
-      if (location.pathname !== '/') {
-        navigate('/');
-        setTimeout(() => {
-          const el = document.getElementById(item.path.replace('/#', ''));
-          el?.scrollIntoView({ behavior: 'smooth' });
-        }, 500);
-      } else {
-        const el = document.getElementById(item.path.replace('/#', ''));
-        el?.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      navigate(item.path);
-      window.scrollTo({ top: 0 });
-    }
-  }, [navigate, location.pathname]);
+    navigate(item.path);
+    window.scrollTo({ top: 0 });
+  }, [navigate]);
 
   return (
     <AppBar
