@@ -25,7 +25,7 @@ const ShortcutsPage = memo(function ShortcutsPage() {
   useEffect(() => {
     (async () => {
       const { data } = await supabase
-        .from('repository_shortcuts')
+        .from('repository_gallery')
         .select('*')
         .order('created_at', { ascending: false });
       setShortcuts(data || []);
@@ -135,10 +135,10 @@ const ShortcutsPage = memo(function ShortcutsPage() {
                   justifyContent: 'center',
                   flexShrink: 0,
                 }}>
-                  {item.image_url ? (
+                  {item.image_url_1 ? (
                     <Box
                       component="img"
-                      src={item.image_url}
+                      src={item.image_url_1}
                       alt={item.title}
                       sx={{
                         width: '100%',
