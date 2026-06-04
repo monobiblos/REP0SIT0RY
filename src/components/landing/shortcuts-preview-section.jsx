@@ -16,7 +16,7 @@ const ShortcutsPreviewSection = memo(function ShortcutsPreviewSection() {
   useEffect(() => {
     (async () => {
       const { data } = await supabase
-        .from('repository_shortcuts')
+        .from('repository_gallery')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(4);
@@ -93,10 +93,10 @@ const ShortcutsPreviewSection = memo(function ShortcutsPreviewSection() {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                  {item.image_url ? (
+                  {item.image_url_1 ? (
                     <Box
                       component="img"
-                      src={item.image_url}
+                      src={item.image_url_1}
                       alt={item.title}
                       sx={{
                         width: '100%',
