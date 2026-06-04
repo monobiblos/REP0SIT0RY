@@ -1,25 +1,156 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html, body {
-  width: 100%;
-  min-height: 100vh;
-  background: #ffffff;
+/* 홈 그리드: 4섹션 모두 동일한 좌우 너비 구조 */
+.home-grid {
+  display: grid;
+  /* 2열: 왼쪽(메모+책장), 오른쪽(바로가기+방명록) */
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
-#root {
-  width: 100%;
-  min-height: 100vh;
+/* 각 섹션 배치 */
+.memo-section      { grid-column: 1; grid-row: 1; }
+.arcaives-section  { grid-column: 1; grid-row: 2; }   /* 책장 */
+.shortcuts-section { grid-column: 2; grid-row: 1; }
+.guestbook-section { grid-column: 2; grid-row: 2; }   /* 방명록 */
+
+/* =============================================
+   바로가기 갤러리
+   ============================================= */
+
+.shortcuts-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.shortcut-card {
   display: flex;
   flex-direction: column;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  cursor: pointer;
 }
 
-:root {
-  --color-primary: #4285f4;
-  --color-glitch: #D5BEE1;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
+.shortcut-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-2px);
 }
 
-::selection {
-  background: rgba(66, 133, 244, 0.2);
+.shortcut-image-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.shortcut-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.shortcut-card:hover .shortcut-image-wrap img {
+  transform: scale(1.04);
+}
+
+.shortcut-no-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.2);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.shortcut-info {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shortcut-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shortcut-desc {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =============================================
+   admin shortcuts-manager 추가 스타일
+   ============================================= */
+
+.image-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.current-image-hint {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.item-thumb {
+  width: 56px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.item-desc {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+  display: block;
+}
+
+/* =============================================
+   반응형
+   ============================================= */
+
+@media (max-width: 768px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+  .memo-section,
+  .arcaives-section,
+  .shortcuts-section,
+  .guestbook-section {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .shortcuts-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .shortcuts-gallery {
+    grid-template-columns: 1fr;
+  }
 }
