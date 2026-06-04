@@ -37,12 +37,12 @@ const ShortcutsPreviewSection = memo(function ShortcutsPreviewSection() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 1 }}>
             <Box sx={{ width: 24, height: '1px', bgcolor: 'divider' }} />
             <Typography variant="overline" sx={{ color: 'text.secondary', letterSpacing: '0.18em', fontSize: '0.68rem' }}>
-              Short Cut
+              Gallary
             </Typography>
             <Box sx={{ width: 24, height: '1px', bgcolor: 'divider' }} />
           </Box>
           <Typography variant="h4" sx={{ fontWeight: 700, color: '#1a1a1a', display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-            바로가기
+            갤러리
             <Box component="span" sx={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', bgcolor: ACCENT, mb: '6px' }} />
           </Typography>
         </Box>
