@@ -30,13 +30,13 @@ const MemoSection = memo(function MemoSection() {
           variant="overline"
           sx={{ color: 'primary.main', letterSpacing: '0.2em', display: 'block', textAlign: 'center', mb: 1 }}
         >
-        Guestbook
+        Memo
         </Typography>
         <Typography
           variant="h4"
           sx={{ fontWeight: 700, textAlign: 'center', mb: 6, color: '#1a1a1a' }}
         >
-        방명록
+        메모
         </Typography>
 
         <Grid container spacing={2}>
