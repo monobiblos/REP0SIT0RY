@@ -34,15 +34,18 @@ const ShortcutsPreviewSection = memo(function ShortcutsPreviewSection() {
 
         {/* 헤더 */}
         <Box sx={{ textAlign: 'center', mb: 5 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 1 }}>
-            <Box sx={{ width: 24, height: '1px', bgcolor: 'divider' }} />
-            Gallary
-            <Box sx={{ width: 24, height: '1px', bgcolor: 'divider' }} />
-          </Box>
-          <Typography variant="h4" sx={{ fontWeight: 700, color: '#1a1a1a', display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-            갤러리
-            <Box component="span" sx={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', bgcolor: ACCENT, mb: '6px' }} />
-          </Typography>
+          <Typography
+          variant="overline"
+          sx={{ color: 'primary.main', letterSpacing: '0.2em', display: 'block', textAlign: 'center', mb: 1 }}
+        >
+        Gallery
+        </Typography>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: 700, textAlign: 'center', mb: 6, color: '#1a1a1a' }}
+        >
+        갤러리
+        </Typography>
         </Box>
 
         {/* 갤러리 그리드 (최대 4개 미리보기) */}

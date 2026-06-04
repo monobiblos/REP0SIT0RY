@@ -28,13 +28,13 @@ const ContactSection = memo(function ContactSection() {
           variant="overline"
           sx={{ color: 'primary.main', letterSpacing: '0.2em', display: 'block', textAlign: 'center', mb: 1 }}
         >
-          Short Cut
+        Guestbook
         </Typography>
         <Typography
           variant="h4"
           sx={{ fontWeight: 700, textAlign: 'center', mb: 6, color: '#1a1a1a' }}
         >
-          바로가기
+        방명록
         </Typography>
 
         <Box
