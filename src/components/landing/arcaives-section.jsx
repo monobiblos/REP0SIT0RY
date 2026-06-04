@@ -165,8 +165,8 @@ const ArcaivesSection = memo(function ArcaivesSection() {
   const bottomShelf = books.slice(half);
 
   return (
-    <Box component="section" sx={{ py: { xs: 8, md: 12 }, backgroundColor: '#fff' }}>
-      <Container maxWidth="md">
+    <Box component="section" id="shortcut" sx={{ py: { xs: 8, md: 12 }, backgroundColor: '#fff' }}>
+      <Container maxWidth="lg">
         <Typography
           variant="overline"
           sx={{ color: 'primary.main', letterSpacing: '0.2em', display: 'block', textAlign: 'center', mb: 1 }}
