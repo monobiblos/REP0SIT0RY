@@ -63,9 +63,9 @@ const ShortcutsPreviewSection = memo(function ShortcutsPreviewSection() {
             {shortcuts.map((item) => (
               <Box
                 key={item.id}
-                component="a"
-                href={item.url}
-                target="_blank"
+                component={item.url ? "a" : "div"}
+                href={item.url || undefined}
+                target={item.url ? "_blank" : undefined}
                 rel="noopener noreferrer"
                 sx={{
                   display: 'flex',
