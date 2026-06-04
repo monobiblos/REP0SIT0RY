@@ -23,7 +23,7 @@ const ContactSection = memo(function ContactSection() {
 
   return (
     <Box component="section" id="shortcut" sx={{ py: { xs: 8, md: 12 }, backgroundColor: '#fff' }}>
-      <Container maxWidth="lg">
+      <Container maxWidth="mb">
         <Typography
           variant="overline"
           sx={{ color: 'primary.main', letterSpacing: '0.2em', display: 'block', textAlign: 'center', mb: 1 }}
