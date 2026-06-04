@@ -8,6 +8,7 @@ const HomePage = lazy(() => import('./pages/home-page'));
 const ArcaivesPage = lazy(() => import('./pages/arcaives-page'));
 const MemoPage = lazy(() => import('./pages/memo-page'));
 const AdminPage = lazy(() => import('./pages/admin-page'));
+const ShortcutsPage = lazy(() => import('./pages/shortcuts-page'));
 
 function AppContent() {
   const location = useLocation();
@@ -37,6 +38,7 @@ function AppContent() {
             <Route path="/arcaives/:id" element={<ArcaivesPage />} />
             <Route path="/memo" element={<MemoPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/shortcuts" element={<ShortcutsPage />} />
           </Routes>
         </Suspense>
       </Box>
