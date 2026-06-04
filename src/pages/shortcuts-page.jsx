@@ -47,15 +47,9 @@ const ShortcutsPage = memo(function ShortcutsPage() {
 
         {/* 페이지 헤더 */}
         <Box sx={{ mb: { xs: 4, md: 6 } }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <Box sx={{ width: 24, height: '1px', bgcolor: 'divider' }} />
-            <Typography variant="overline" sx={{ color: 'text.secondary', letterSpacing: '0.18em', fontSize: '0.68rem' }}>
-              Gallery
-            </Typography>
-          </Box>
           <Box sx={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>
             <Typography variant="h3" sx={{ fontWeight: 700, color: '#1a1a1a', display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-              갤러리
+              Gallery
               <Box component="span" sx={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', bgcolor: ACCENT, mb: '8px' }} />
             </Typography>
             <Typography sx={{ fontSize: '0.8rem', color: 'text.disabled', pb: 0.5 }}>
