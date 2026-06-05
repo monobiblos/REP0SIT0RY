@@ -166,7 +166,7 @@ const ArcaivesSection = memo(function ArcaivesSection() {
 
   return (
     <Box component="section" id="shortcut" sx={{ py: { xs: 8, md: 12 }, backgroundColor: '#fff' }}>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Typography
           variant="overline"
           sx={{ color: 'primary.main', letterSpacing: '0.2em', display: 'block', textAlign: 'center', mb: 1 }}
@@ -180,7 +180,7 @@ const ArcaivesSection = memo(function ArcaivesSection() {
           책장
         </Typography>
 
-        <Box sx={{ maxWidth: 500, mx: 'auto', mb: 4 }}>
+        <Box sx={{ maxWidth: 800, mx: 'auto', mb: 4 }}>
           {/* Top shelf */}
           <Box sx={{ ...shelfStyle, height: 130 }}>
             {topShelf.map((book, i) => (

@@ -45,8 +45,8 @@ const GuestbookSection = memo(function GuestbookSection() {
   };
 
   return (
-    <Box component="section" id="shortcut" sx={{ py: { xs: 8, md: 12 }, backgroundColor: '#fff' }}>
-      <Container maxWidth="lg">
+    <Box component="section" id="guestbook" sx={{ py: { xs: 8, md: 12 }, backgroundColor: '#fafafa' }}>
+      <Container maxWidth="xs">
 
         {/* 헤더 */}
         <Box sx={{ textAlign: 'center', mb: 5 }}>
