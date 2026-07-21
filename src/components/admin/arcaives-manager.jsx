@@ -9,6 +9,8 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Tooltip from '@mui/material/Tooltip';
+import Chip from '@mui/material/Chip';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -20,25 +22,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import LockIcon from '@mui/icons-material/Lock';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { supabase } from '../../utils/supabase';
-//
 
-function WritePost() {
-  const [content, setContent] = useState('');
-
-  const submit = async () => {
-    await supabase.from('posts').insert({ title, content });
-  };
-
-  return (
-    <div>
-      <MDEditor value={content} onChange={setContent} height={400} />
-      <button onClick={submit}>저장</button>
-    </div>
-  );
-}
-//
-const emptyEntry = { title: '', content: '', is_secret: false, sort_order: 0, secret_password: '' };
+const emptyEntry = { title: '', content: '', is_published: true, is_secret: false, sort_order: 0, secret_password: '' };
 
 function ArcaivesManager() {
   const [entries, setEntries] = useState([]);
@@ -62,10 +50,30 @@ function ArcaivesManager() {
 
   useEffect(() => { fetchEntries(); }, [fetchEntries]);
 
+  // 게시 토글 — 다이얼로그 없이 바로 전환
+  const handleTogglePublish = useCallback(async (entry) => {
+    const next = !entry.is_published;
+    await supabase
+      .from('repository_arcaives')
+      .update({ is_published: next })
+      .eq('id', entry.id);
+    setEntries((prev) =>
+      prev.map((e) => e.id === entry.id ? { ...e, is_published: next } : e)
+    );
+    setSnackbar({ open: true, message: next ? '게시되었습니다.' : '비공개로 전환되었습니다.', severity: 'success' });
+  }, []);
+
   const handleOpen = (entry = null) => {
     if (entry) {
       setEditingEntry(entry);
-      setFormData({ title: entry.title, content: entry.content || '', is_secret: entry.is_secret, sort_order: entry.sort_order, secret_password: entry.secret_password || '' });
+      setFormData({
+        title: entry.title,
+        content: entry.content || '',
+        is_published: entry.is_published ?? true,
+        is_secret: entry.is_secret,
+        sort_order: entry.sort_order,
+        secret_password: entry.secret_password || '',
+      });
     } else {
       setEditingEntry(null);
       setFormData(emptyEntry);
@@ -107,48 +115,94 @@ function ArcaivesManager() {
     setSubmitting(false);
   };
 
+  const publishedCount = entries.filter((e) => e.is_published !== false).length;
+
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>
-          Arcaives ({entries.length})
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            Arcaives ({entries.length})
+          </Typography>
+          <Chip
+            label={`게시 ${publishedCount} / 비공개 ${entries.length - publishedCount}`}
+            size="small"
+            variant="outlined"
+            sx={{ fontSize: '0.72rem' }}
+          />
+        </Box>
         <Button startIcon={<AddIcon />} variant="contained" size="small" onClick={() => handleOpen()}>
           추가
         </Button>
       </Box>
 
       <Grid container spacing={2}>
-        {entries.map((entry) => (
-          <Grid key={entry.id} size={{ xs: 12, sm: 6 }}>
-            <Card sx={{ height: '100%' }}>
-              <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
-                      {entry.is_secret && <LockIcon sx={{ fontSize: 14, mr: 0.5 }} />}
-                      {entry.title}
-                    </Typography>
+        {entries.map((entry) => {
+          const isPublished = entry.is_published !== false;
+          return (
+            <Grid key={entry.id} size={{ xs: 12, sm: 6 }}>
+              <Card sx={{
+                height: '100%',
+                opacity: isPublished ? 1 : 0.55,
+                border: isPublished ? '1px solid transparent' : '1px dashed #ccc',
+                transition: 'opacity 0.2s',
+              }}>
+                <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <Box sx={{ flex: 1, mr: 1 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.3 }}>
+                        {entry.is_secret && <LockIcon sx={{ fontSize: 13, color: 'text.disabled' }} />}
+                        {!isPublished && (
+                          <Chip label="비공개" size="small" sx={{ fontSize: '0.65rem', height: 18, bgcolor: '#f5f5f5' }} />
+                        )}
+                        <Typography sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
+                          {entry.title}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
+                      {/* 게시 on/off 토글 */}
+                      <Tooltip title={isPublished ? '비공개로 전환' : '게시하기'}>
+                        <IconButton
+                          size="small"
+                          onClick={() => handleTogglePublish(entry)}
+                          sx={{ color: isPublished ? 'primary.main' : 'text.disabled' }}
+                        >
+                          {isPublished
+                            ? <VisibilityIcon fontSize="small" />
+                            : <VisibilityOffIcon fontSize="small" />}
+                        </IconButton>
+                      </Tooltip>
+                      <IconButton size="small" onClick={() => handleOpen(entry)}>
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                      <IconButton size="small" color="error" onClick={() => setDeleteTarget(entry)}>
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
                   </Box>
-                  <Box>
-                    <IconButton size="small" onClick={() => handleOpen(entry)}><EditIcon fontSize="small" /></IconButton>
-                    <IconButton size="small" color="error" onClick={() => setDeleteTarget(entry)}><DeleteIcon fontSize="small" /></IconButton>
-                  </Box>
-                </Box>
-                <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                  {entry.content}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+                  <Typography variant="body2" sx={{
+                    color: 'text.secondary', mt: 0.5,
+                    display: '-webkit-box', WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical', overflow: 'hidden',
+                  }}>
+                    {entry.content}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          );
+        })}
       </Grid>
 
       {/* Edit/Create Dialog */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="md">
         <DialogTitle>{editingEntry ? '글 수정' : '새 글 작성'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
-          <TextField fullWidth label="제목" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
+          <TextField
+            fullWidth label="제목" value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          />
           <div data-color-mode="light">
             <MDEditor
               value={formData.content}
@@ -157,10 +211,37 @@ function ArcaivesManager() {
               preview="live"
             />
           </div>
-          <TextField fullWidth label="정렬 순서" type="number" value={formData.sort_order} onChange={(e) => setFormData({ ...formData, sort_order: Number(e.target.value) })} />
-          <FormControlLabel control={<Switch checked={formData.is_secret} onChange={(e) => setFormData({ ...formData, is_secret: e.target.checked })} />} label="비공개" />
+          <TextField
+            fullWidth label="정렬 순서" type="number" value={formData.sort_order}
+            onChange={(e) => setFormData({ ...formData, sort_order: Number(e.target.value) })}
+          />
+          {/* 게시 여부 */}
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formData.is_published}
+                onChange={(e) => setFormData({ ...formData, is_published: e.target.checked })}
+                color="primary"
+              />
+            }
+            label={formData.is_published ? '게시 중 (방문자에게 보임)' : '비공개 (방문자에게 숨김)'}
+          />
+          {/* 비밀번호 잠금 (기존 유지) */}
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formData.is_secret}
+                onChange={(e) => setFormData({ ...formData, is_secret: e.target.checked })}
+              />
+            }
+            label="비밀번호 잠금"
+          />
           {formData.is_secret && (
-            <TextField fullWidth label="열람 비밀번호 (선택)" value={formData.secret_password} onChange={(e) => setFormData({ ...formData, secret_password: e.target.value })} helperText="비밀번호를 설정하면 방문자가 비밀번호를 입력하여 열람할 수 있습니다" />
+            <TextField
+              fullWidth label="열람 비밀번호 (선택)" value={formData.secret_password}
+              onChange={(e) => setFormData({ ...formData, secret_password: e.target.value })}
+              helperText="비밀번호를 설정하면 방문자가 비밀번호를 입력하여 열람할 수 있습니다"
+            />
           )}
         </DialogContent>
         <DialogActions>
@@ -183,8 +264,14 @@ function ArcaivesManager() {
         </DialogActions>
       </Dialog>
 
-      <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={() => setSnackbar((p) => ({ ...p, open: false }))} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar((p) => ({ ...p, open: false }))}>{snackbar.message}</Alert>
+      <Snackbar
+        open={snackbar.open} autoHideDuration={3000}
+        onClose={() => setSnackbar((p) => ({ ...p, open: false }))}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity={snackbar.severity} onClose={() => setSnackbar((p) => ({ ...p, open: false }))}>
+          {snackbar.message}
+        </Alert>
       </Snackbar>
     </Box>
   );
