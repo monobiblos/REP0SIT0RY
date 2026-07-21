@@ -66,6 +66,7 @@ function ArcaivesPage() {
       supabase
         .from('repository_arcaives')
         .select('*')
+        .eq('is_published', true)
         .order('sort_order', { ascending: true })
         .then(({ data }) => {
           setEntries(data || []);
